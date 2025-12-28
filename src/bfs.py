@@ -1,14 +1,32 @@
+"""
+Breadth-First Search (BFS) Visualization
+
+This module provides an animated visualization of the Breadth-First Search algorithm,
+demonstrating how BFS explores a graph level by level using a queue data structure.
+
+The visualization includes:
+- Step-by-step algorithm explanation
+- Queue visualization showing enqueue/dequeue operations
+- Level-by-level traversal animation
+- Bipartite graph detection example
+"""
+
 from manim import *
 
 
 class BFSQueueVisualization(Scene):
     """
-    Breadth-First Search with explicit queue, matching styles/colors of DFS scenes.
+    Visualizes the Breadth-First Search algorithm with explicit queue operations.
+    
+    BFS explores a graph by visiting all neighbors of the current vertex before
+    moving to the next level, making it ideal for finding shortest paths in
+    unweighted graphs.
     """
 
     def construct(self):
         # ============================================================
-        # Introduction
+        # Section 1: Introduction
+        # Display the main title introducing Breadth-First Search
         # ============================================================
         intro_title = Text("Graph Theory – Breadth-First Search", font_size=48)
         self.play(FadeIn(intro_title, shift=UP * 0.5), run_time=1.5)
@@ -16,7 +34,8 @@ class BFSQueueVisualization(Scene):
         self.play(FadeOut(intro_title, shift=UP * 0.5), run_time=0.8)
 
         # ============================================================
-        # BFS Algorithm Steps (separate slide)
+        # Section 2: Algorithm Explanation
+        # Display the step-by-step BFS algorithm before visualization
         # ============================================================
         bfs_algo_title = Text("BFS Algorithm", font_size=40)
         bfs_algo_text = VGroup(
@@ -34,7 +53,10 @@ class BFSQueueVisualization(Scene):
         self.wait(1)
         self.play(FadeOut(algo_block), run_time=1.0)
 
-        # Graph setup (same as DFS)
+        # ============================================================
+        # Section 3: Graph Setup and Visualization
+        # Create the graph structure and initialize the BFS visualization
+        # ============================================================
         vertices = [0, 1, 2, 3, 4, 5, 6]
         edges = [(0, 1), (0, 2), (1, 3), (1, 4), (2, 5), (3, 6), (4, 6)]
 

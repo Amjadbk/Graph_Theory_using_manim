@@ -1,10 +1,35 @@
+"""
+Eulerian Paths and Circuits Visualization
+
+This module provides animated visualizations of Eulerian paths and circuits,
+including Hierholzer's and Fleury's algorithms for finding Eulerian trails.
+
+The visualization includes:
+- Euler path vs. Euler circuit concepts
+- Degree conditions for Eulerian graphs
+- Hierholzer's algorithm step-by-step
+- Fleury's algorithm demonstration
+- Multiple example graphs
+"""
+
 from manim import *
 from collections import defaultdict
 
 
 class EulerianPaths(Scene):
+    """
+    Visualizes Eulerian paths, circuits, and algorithms for finding them.
+    
+    An Eulerian path uses every edge exactly once, while an Eulerian circuit
+    is an Eulerian path that returns to the starting vertex. This scene
+    demonstrates the conditions and algorithms for finding such paths.
+    """
+    
     def construct(self):
-        # Common style and helpers
+        # ============================================================
+        # Configuration: Visual Styles and Constants
+        # Define colors and styles used throughout the visualization
+        # ============================================================
         EDGE_COLOR = WHITE
         EDGE_HIGHLIGHT = YELLOW
         NODE_COLOR = WHITE
@@ -26,6 +51,18 @@ class EulerianPaths(Scene):
         }
 
         def make_graph(vertices, edges, layout, directed=False):
+            """
+            Create a graph with consistent styling and vertex labels.
+            
+            Args:
+                vertices: List of vertex identifiers
+                edges: List of (u, v) tuples representing edges
+                layout: Dictionary mapping vertices to positions
+                directed: Whether to use directed edges (default: False)
+            
+            Returns:
+                Tuple of (graph, labels) where labels is a VGroup of vertex labels
+            """
             g = Graph(
                 vertices,
                 edges,
@@ -42,7 +79,17 @@ class EulerianPaths(Scene):
             return g, labels
 
         def highlight_path(graph, labels, seq, color=EDGE_HIGHLIGHT, close_cycle=False, run_time_per_edge=0.9):
-            """Highlight a path/cycle given by a vertex sequence."""
+            """
+            Animate a path through the graph by highlighting edges in sequence.
+            
+            Args:
+                graph: The Manim Graph object
+                labels: VGroup of vertex labels (unused but kept for consistency)
+                seq: List of vertices in path order
+                color: Color for highlighting edges (default: EDGE_HIGHLIGHT)
+                close_cycle: If True, add edge from last to first vertex (default: False)
+                run_time_per_edge: Animation time per edge (default: 0.9)
+            """
             if close_cycle and seq[0] != seq[-1]:
                 seq = list(seq) + [seq[0]]
             dot = Dot(radius=0.12, color=color)
@@ -68,11 +115,25 @@ class EulerianPaths(Scene):
             self.remove(dot)
 
         def get_edge_key(u, v, graph):
-            """Get the correct edge key for undirected graphs."""
+            """
+            Get the correct edge key for undirected graphs.
+            
+            Since undirected graphs store edges as (min, max) tuples,
+            this function finds the correct key regardless of parameter order.
+            
+            Args:
+                u: First vertex
+                v: Second vertex
+                graph: The graph object to search
+            
+            Returns:
+                The edge key (u, v) or (v, u) whichever exists in graph.edges
+            """
             return (u, v) if (u, v) in graph.edges else (v, u)
 
         # ============================================================
-        # Prompt 1: Introduction
+        # Section 1: Introduction
+        # Display the main title introducing Eulerian paths and circuits
         # ============================================================
         title = Text("Graph Theory – Eulerian Path and Circuit", font_size=48)
         self.play(FadeIn(title, shift=UP * 0.5), run_time=2.25)
@@ -80,7 +141,8 @@ class EulerianPaths(Scene):
         self.play(FadeOut(title, shift=UP * 0.5), run_time=1.2)
 
         # ============================================================
-        # Prompt 2: Euler Path
+        # Section 2: Euler Path
+        # Demonstrate an Euler path (uses every edge once, different start/end)
         # ============================================================
         path_title = Text("Euler Path", font_size=40).to_edge(UP)
         self.play(Write(path_title), run_time=1.2)
@@ -92,9 +154,10 @@ class EulerianPaths(Scene):
         ).next_to(path_title, DOWN, buff=0.5)
         self.play(Write(def_euler_path), run_time=1.8)
 
-        # Graph with Euler path (two odd vertices: 1 and 2)
-        # Check: deg(1)=1 (odd), deg(2)=3 (odd), deg(3)=2 (even), deg(4)=2 (even)
-        # Exactly 2 odd vertices → Euler path exists (not circuit)
+        # Graph configuration for Euler path demonstration
+        # Euler path condition: exactly 2 vertices with odd degree
+        # This graph: deg(1)=1 (odd), deg(2)=3 (odd), deg(3)=2 (even), deg(4)=2 (even)
+        # Since exactly 2 vertices have odd degree, an Euler path exists (but not a circuit)
         verts_p = [1, 2, 3, 4]
         edges_p = [(1, 2), (2, 3), (3, 4), (2, 4)]
         layout_p = {
@@ -153,7 +216,8 @@ class EulerianPaths(Scene):
         )
 
         # ============================================================
-        # Prompt 3: Euler Circuit
+        # Section 3: Euler Circuit
+        # Demonstrate an Euler circuit (uses every edge once, returns to start)
         # ============================================================
         circuit_title = Text("Euler Circuit", font_size=40).to_edge(UP)
         self.play(Write(circuit_title), run_time=1.2)
@@ -165,8 +229,9 @@ class EulerianPaths(Scene):
         ).next_to(circuit_title, DOWN, buff=0.5)
         self.play(Write(def_euler_circuit), run_time=1.8)
 
-        # Simple Eulerian cycle graph: 4-cycle (all vertices have degree 2, even)
-        # This is Eulerian - all vertices have even degree
+        # Graph configuration for Euler circuit demonstration
+        # Euler circuit condition: all vertices must have even degree
+        # This 4-cycle graph: all vertices have degree 2 (even) → Euler circuit exists
         verts_c = [1, 2, 3, 4]
         edges_c = [(1, 2), (2, 3), (3, 4), (4, 1)]
         layout_c = {
@@ -237,7 +302,8 @@ class EulerianPaths(Scene):
             self.play(FadeOut(batman_text), run_time=1.0)
 
         # ============================================================
-        # Prompt 4: Euler Conditions
+        # Section 4: Eulerian Conditions
+        # Explain the mathematical conditions for Euler paths and circuits
         # ============================================================
         cond_title = Text("Euler Conditions", font_size=40).to_edge(UP)
         self.play(Write(cond_title), run_time=1.2)
@@ -478,7 +544,8 @@ class EulerianPaths(Scene):
         )
 
         # ============================================================
-        # Prompt 6: Hierholzer's Algorithm
+        # Section 6: Hierholzer's Algorithm
+        # Demonstrate the algorithm for finding Eulerian circuits/trails
         # ============================================================
         hierholzer_title = Text("Hierholzer's Algorithm", font_size=40).to_edge(UP)
         self.play(Write(hierholzer_title), run_time=1.2)
@@ -504,7 +571,8 @@ class EulerianPaths(Scene):
         )
 
         # ============================================================
-        # Prompt 7: Hierholzer Example
+        # Section 7: Hierholzer's Algorithm Example
+        # Step-by-step visualization of the algorithm on a specific graph
         # ============================================================
         example_title = Text("Hierholzer Example", font_size=40).to_edge(UP)
         self.play(Write(example_title), run_time=1.2)

@@ -1,12 +1,47 @@
+"""
+Dijkstra's Algorithm Visualization
+
+This module provides animated visualizations of Dijkstra's shortest path algorithm,
+demonstrating how to find the shortest paths from a source vertex to all other
+vertices in a weighted graph.
+
+The visualization includes:
+- Priority queue explanation and visualization
+- Step-by-step distance updates
+- Path reconstruction
+- Multiple example graphs
+"""
+
 from manim import *
 import numpy as np
 import heapq
 
+
 class DijkstraVisualization(Scene):
+    """
+    Visualizes Dijkstra's algorithm for finding shortest paths in weighted graphs.
+    
+    Dijkstra's algorithm uses a priority queue to systematically explore vertices
+    in order of increasing distance from the source, guaranteeing shortest paths
+    for non-negative edge weights.
+    """
+    
     def run_dijkstra_example(self, vertices, edges, edge_weights, layout, example_num):
-        """Run Dijkstra's algorithm visualization for a given graph configuration"""
+        """
+        Run a complete Dijkstra's algorithm visualization for a given graph.
         
-        # Palette & timing tuned to match Arabic narration script
+        Args:
+            vertices: List of vertex identifiers
+            edges: List of (u, v) tuples representing edges
+            edge_weights: Dictionary mapping edges to their weights
+            layout: Dictionary mapping vertices to their (x, y) positions
+            example_num: Example number for title display
+        """
+        
+        # ============================================================
+        # Configuration: Visual Styles and Animation Timing
+        # Define colors, styles, and timing constants for smooth animations
+        # ============================================================
         EDGE_COLOR = WHITE
         EDGE_HIGHLIGHT = "#FF6B6B"  # vibrant red highlight
         NODE_ACTIVE = "#FFD54F"     # warm gold

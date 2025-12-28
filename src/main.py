@@ -1,13 +1,35 @@
+"""
+Graph Theory Animations - Main Sequence
+
+This module provides comprehensive visualizations of graph theory concepts including:
+- Graph traversals (degree, walk, trail, circuit, path, cycle)
+- Graph types (random, complete, bipartite, connected/disconnected, directed, regular)
+- Graph representations (adjacency matrix, incidence matrix, adjacency list, edge list)
+- Subgraphs
+
+All animations are created using Manim Community Edition.
+"""
+
 from manim import *
 import itertools
 import random
 
+
 class GraphSequence(Scene):
+    """
+    Main scene demonstrating fundamental graph theory concepts and representations.
+    
+    This scene covers a wide range of topics from basic graph terminology to
+    advanced representations, providing educational animations for each concept.
+    """
+    
     def construct(self):
-        random.seed(1)  # for reproducibility
+        # Set random seed for reproducible graph generation
+        random.seed(1)
         
         # ============================================================
-        # Introduction
+        # Section 1: Introduction
+        # Display the main title and introduce the graph theory concepts
         # ============================================================
         intro_title = Text("Graph Theory – Traversals, Types, and Matrices", font_size=48)
         self.play(FadeIn(intro_title, shift=UP * 0.5), run_time=1.5)
@@ -15,7 +37,8 @@ class GraphSequence(Scene):
         self.play(FadeOut(intro_title, shift=UP * 0.5), run_time=1.2)
 
         # ============================================================
-        # Dark Image
+        # Section 2: Introductory Image
+        # Display an introductory image before explaining graph concepts
         # ============================================================
         try:
             dark_img = ImageMobject("assets/dark.jpg")
@@ -24,14 +47,14 @@ class GraphSequence(Scene):
             self.play(FadeIn(dark_img), run_time=1.5)
             self.wait(2)
             self.play(FadeOut(dark_img), run_time=1.0)
-        except:
-            # If image not found, skip
+        except FileNotFoundError:
+            # Gracefully handle missing image file - continue without it
             pass
 
         # ============================================================
-        # Node and Edge Introduction
+        # Section 3: Basic Graph Elements
+        # Introduce the fundamental building blocks: nodes (vertices) and edges
         # ============================================================
-        # Create a simple node and edge to introduce the concepts
         intro_node = Dot(radius=0.15, color=WHITE, fill_opacity=1.0)
         intro_node.move_to(LEFT * 2 + UP * 1)
         
@@ -73,7 +96,10 @@ class GraphSequence(Scene):
         )
         self.wait(0.5)
 
-        # Shared styles
+        # ============================================================
+        # Section 4: Graph Styling Configuration
+        # Define consistent visual styles for all graphs in this scene
+        # ============================================================
         edge_width = 3
         vertex_style = {
             "radius": 0.12,
@@ -87,9 +113,19 @@ class GraphSequence(Scene):
         }
 
         # ============================================================
-        # Traversal helper
+        # Helper Function: Animate Graph Traversal
+        # Visualizes a path through a graph by animating a dot along edges
         # ============================================================
         def animate_traversal(graph, vertex_sequence, color=YELLOW, dot_radius=0.12):
+            """
+            Animate a traversal through a graph following a vertex sequence.
+            
+            Args:
+                graph: The Manim Graph object to traverse
+                vertex_sequence: List of vertices in traversal order
+                color: Color for highlighting the path (default: YELLOW)
+                dot_radius: Radius of the animated dot (default: 0.12)
+            """
             if not vertex_sequence or len(vertex_sequence) < 2:
                 return
             dot = Dot(radius=dot_radius, color=color)
@@ -126,9 +162,9 @@ class GraphSequence(Scene):
             self.play(FadeOut(dot), run_time=0.4)
 
         # ============================================================
-        # Edge-addition helper
+        # Helper Function: Smooth Edge Addition
+        # Adds edges to a graph with smooth animation effects
         # ============================================================
-        # Helper: smooth edge addition (used everywhere)
         def smooth_add_edges(
             graph,
             new_edges,
@@ -173,10 +209,12 @@ class GraphSequence(Scene):
             )
             return edge_mobs
 
-        # =========================================
-        # TRAVERSALS (from gi.py)
-        # =========================================
-        # Degree example
+        # ============================================================
+        # Section 5: Graph Traversals and Basic Concepts
+        # Demonstrate fundamental graph traversal concepts and terminology
+        # ============================================================
+        # Subsection 5.1: Node Degree
+        # The degree of a vertex is the number of edges connected to it
         vertices_deg1 = [1, 2, 3, 4]
         edges_deg1 = [(1, 2), (2, 3), (3, 4), (1, 4), (2, 4)]
         layout_deg1 = {

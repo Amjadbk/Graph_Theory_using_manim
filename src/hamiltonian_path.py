@@ -1,7 +1,31 @@
+"""
+Hamiltonian Paths and Cycles Visualization
+
+This module provides animated visualizations of Hamiltonian paths and cycles,
+including theorems (Ore's, Dirac's) and backtracking algorithms for finding
+Hamiltonian cycles.
+
+The visualization includes:
+- Hamilton path vs. Hamilton cycle concepts
+- Ore's Theorem demonstration
+- Dirac's Theorem demonstration
+- Backtracking algorithm with stack visualization
+- Multiple example graphs
+"""
+
 from manim import *
 
 
 class HamiltonConcepts(Scene):
+    """
+    Visualizes Hamiltonian paths, cycles, and algorithms for finding them.
+    
+    A Hamiltonian path visits every vertex exactly once, while a Hamiltonian
+    cycle is a Hamiltonian path that returns to the starting vertex. This scene
+    demonstrates theorems that guarantee Hamiltonian cycles and algorithms
+    for finding them.
+    """
+    
     def construct(self):
         edge_width = 3
         vertex_style = {
@@ -16,7 +40,18 @@ class HamiltonConcepts(Scene):
         }
 
         def animate_path(graph, path_vertices, color=YELLOW, close_cycle=False):
-            """Animate a Hamilton path/cycle as a moving dot plus edge highlighting."""
+            """
+            Animate a Hamiltonian path or cycle through the graph.
+            
+            Visualizes the path by moving a dot along edges and highlighting
+            them in sequence. Optionally closes the cycle by returning to start.
+            
+            Args:
+                graph: The Manim Graph object to traverse
+                path_vertices: List of vertices in path order
+                color: Color for highlighting the path (default: YELLOW)
+                close_cycle: If True, add edge from last to first vertex (default: False)
+            """
             if len(path_vertices) < 2:
                 return
 
@@ -61,7 +96,10 @@ class HamiltonConcepts(Scene):
 
             self.play(FadeOut(dot), run_time=0.4)
 
-        # Base Hamiltonian graph used in many prompts (hexagon with chords)
+        # ============================================================
+        # Configuration: Base Graph Structure
+        # Define a reusable Hamiltonian graph (hexagon with chords) for demonstrations
+        # ============================================================
         vertices = [1, 2, 3, 4, 5, 6]
         edges = [
             (1, 2),
@@ -93,7 +131,8 @@ class HamiltonConcepts(Scene):
         base_graph.scale(0.95)
 
         # ============================================================
-        # Introduction
+        # Section 1: Introduction
+        # Display the main title introducing Hamiltonian paths and cycles
         # ============================================================
         intro_title = Text("Graph Theory – Hamiltonian Path and Cycle", font_size=48)
         self.play(FadeIn(intro_title, shift=UP * 0.5), run_time=1.5)
@@ -101,7 +140,8 @@ class HamiltonConcepts(Scene):
         self.play(FadeOut(intro_title, shift=UP * 0.5), run_time=0.8)
 
         # ============================================================
-        # Prompt 9: Hamilton Path (visits every vertex exactly once)
+        # Section 2: Hamilton Path
+        # Demonstrate a Hamilton path (visits every vertex exactly once)
         # ============================================================
         title = Text("Hamilton Path", font_size=40).to_edge(UP)
         desc = MathTex(
@@ -128,7 +168,8 @@ class HamiltonConcepts(Scene):
         self.play(FadeOut(desc), FadeOut(path_label), run_time=0.8)
 
         # ============================================================
-        # Prompt 10: Hamilton Cycle
+        # Section 3: Hamilton Cycle
+        # Demonstrate a Hamilton cycle (Hamilton path that returns to start)
         # ============================================================
         title_cycle = Text("Hamilton Cycle", font_size=40).to_edge(UP)
         desc_cycle = MathTex(
@@ -208,9 +249,11 @@ class HamiltonConcepts(Scene):
             self.play(FadeOut(shelby_text), run_time=1.0)
 
         # ============================================================
-        # Prompt 12: Ore's Theorem
+        # Section 5: Ore's Theorem
+        # Demonstrate Ore's theorem: if deg(u) + deg(v) >= n for all
+        # non-adjacent pairs, then the graph is Hamiltonian
+        # Graph: K6 (complete graph on 6 vertices) minus edge (1,4)
         # ============================================================
-        # Use n = 6, graph satisfying Ore: K6 minus one edge (1,4)
         ore_vertices = [1, 2, 3, 4, 5, 6]
         ore_edges = [
             (1, 2),
@@ -288,9 +331,11 @@ class HamiltonConcepts(Scene):
         self.wait(1)
 
         # ============================================================
-        # Prompt 13: Dirac’s Theorem
+        # Section 6: Dirac's Theorem
+        # Demonstrate Dirac's theorem: if every vertex has degree >= n/2,
+        # then the graph has a Hamiltonian cycle
+        # Example graph: n=6, minimum degree >= 3 (n/2)
         # ============================================================
-        # Graph on n=6 with minimum degree >= n/2 = 3
         dirac_vertices = [1, 2, 3, 4, 5, 6]
         dirac_edges = [
             (1, 2),
@@ -372,7 +417,8 @@ class HamiltonConcepts(Scene):
         self.wait(1)
 
         # ============================================================
-        # Prompt 14: Algorithm Types (Backtracking vs Heuristics)
+        # Section 7: Algorithm Types Comparison
+        # Compare backtracking (systematic) vs heuristics (greedy) approaches
         # ============================================================
         title_alg = Text("Algorithm Types for Hamiltonian Cycles", font_size=34).to_edge(
             UP
@@ -422,11 +468,11 @@ class HamiltonConcepts(Scene):
         self.wait(1)
 
         # ============================================================
-        # Prompt 15–18: Backtracking Algorithm Visualization
+        # Section 8: Backtracking Algorithm Visualization
+        # Demonstrate the backtracking algorithm for finding Hamiltonian cycles
+        # Graph design: path 1->2->3->4->5 reaches a dead end, then backtracks
+        # to find the valid cycle 1->2->3->5->4->1
         # ============================================================
-        # Use a small 5-vertex graph for the algorithm demo
-        # Graph designed so 1->2->3->4->5 hits a dead end at 5,
-        # then backtrack to find 1->2->3->5->4->1
         v_alg = [1, 2, 3, 4, 5]
         e_alg = [
             (1, 2),
@@ -455,7 +501,8 @@ class HamiltonConcepts(Scene):
         alg_graph.scale(0.9)
 
         # ============================================================
-        # Backtracking Algorithm Steps (shown BEFORE graph)
+        # Section 8.1: Backtracking Algorithm Explanation
+        # Display algorithm steps before the interactive visualization
         # ============================================================
         backtrack_algo_title = Text("Backtracking Algorithm", font_size=40).to_edge(UP)
         self.play(Write(backtrack_algo_title), run_time=1.2)
@@ -538,7 +585,11 @@ class HamiltonConcepts(Scene):
         self.play(Write(status_text), run_time=0.5)
         self.wait(1)
 
-        # Prompt 15: Initialization
+        # ============================================================
+        # Section 8.2: Backtracking Algorithm Execution
+        # Step-by-step visualization of the backtracking process
+        # ============================================================
+        # Step 0: Initialize algorithm state
         start_v = 1
         path = [start_v]
         visited_set = {start_v}
@@ -546,14 +597,14 @@ class HamiltonConcepts(Scene):
         visited_items = VGroup()
         current_path_edges = []
 
-        # Initialize: highlight start vertex
+        # Highlight the starting vertex to begin the search
         self.play(
             alg_graph.vertices[start_v].animate.set_fill(YELLOW),
             label_dict[start_v].animate.set_color(BLACK),
             run_time=1.0,
         )
         
-        # Add start to stack
+        # Add starting vertex to the path stack
         stack_item = Rectangle(
             width=1.9,
             height=0.4,
@@ -571,7 +622,7 @@ class HamiltonConcepts(Scene):
         self.add(stack_item_group)
         self.play(FadeIn(stack_item_group, shift=DOWN * 0.15), run_time=0.7)
         
-        # Add to visited
+        # Mark starting vertex as visited
         visited_item = MathTex(str(start_v), font_size=16, color=BLUE)
         visited_item.next_to(visited_label, DOWN, buff=0.2)
         visited_item.align_to(visited_label, LEFT).shift(RIGHT * 0.3)
@@ -581,7 +632,10 @@ class HamiltonConcepts(Scene):
         
         self.wait(1)
 
-        # Helper function to get edge key (handle both directions)
+        # ============================================================
+        # Helper Functions for Backtracking Visualization
+        # ============================================================
+        # Helper: Get edge key (handles both directions for undirected graphs)
         def get_edge_key(u, v):
             key1 = (u, v)
             key2 = (v, u)
@@ -593,12 +647,12 @@ class HamiltonConcepts(Scene):
                 # Return canonical form as fallback
                 return (min(u, v), max(u, v))
 
-        # Helper function to update status
-        # Only show a few key messages to avoid clutter:
-        # - "Exploring..."
-        # - "Dead end"
-        # - "Backtracking..."
-        # - "Hamiltonian cycle found"
+        # Helper: Update status text with concise messages
+        # Filters verbose messages to show only key algorithm states:
+        # - "Exploring..." - actively searching
+        # - "Dead end" - no valid continuation
+        # - "Backtracking..." - removing invalid path segments
+        # - "Hamiltonian cycle found" - solution discovered
         def update_status(msg):
             # Decide which short message to show
             if "Exploring" in msg:
@@ -618,7 +672,7 @@ class HamiltonConcepts(Scene):
             new_status.move_to(status_text.get_center())
             self.play(Transform(status_text, new_status), run_time=0.5)
 
-        # Helper function to push to stack
+        # Helper: Push vertex to stack with smooth animation
         def push_to_stack(vertex):
             stack_item = Rectangle(
                 width=1.9,
@@ -642,7 +696,7 @@ class HamiltonConcepts(Scene):
             self.play(FadeIn(stack_item_group, shift=DOWN * 0.15), run_time=0.7)
             return stack_item_group
 
-        # Helper function to pop from stack
+        # Helper: Pop vertex from stack with smooth animation
         def pop_from_stack():
             if len(stack_items) > 0:
                 item_to_remove = stack_items[-1]
@@ -652,7 +706,7 @@ class HamiltonConcepts(Scene):
                 return True
             return False
 
-        # Prompt 16: Backtracking Process
+        # Begin the backtracking search process
         update_status("Exploring path...")
         self.wait(1)
 
@@ -751,11 +805,11 @@ class HamiltonConcepts(Scene):
         self.play(FadeIn(visited_item, scale=0.9), run_time=0.5)
         self.wait(1)
 
-        # At vertex 5: Check if we can complete the cycle - DEAD END SCENARIO
-        # Path is [1, 2, 3, 4, 5], visited = {1, 2, 3, 4, 5}
-        # All vertices are visited, but we need to check if we can return to start
-        # In our graph, 5 has edges to: 3 (visited), 4 (visited)
-        # There's no edge (5,1) to return to start, so this is a dead end!
+        # Dead End Detection: At vertex 5, all vertices are visited
+        # Current path: [1, 2, 3, 4, 5], visited set: {1, 2, 3, 4, 5}
+        # To complete a Hamiltonian cycle, we need an edge from 5 back to 1
+        # However, vertex 5 only connects to: 3 (already visited) and 4 (already visited)
+        # Since no edge exists from 5 to 1, this path cannot form a cycle → DEAD END
         update_status("At vertex 5: checking cycle completion...")
         self.wait(1)
         

@@ -1,10 +1,34 @@
+"""
+Depth-First Search (DFS) Visualization
+
+This module provides animated visualizations of both recursive and iterative
+Depth-First Search algorithms, demonstrating how DFS explores graphs by going
+as deep as possible before backtracking.
+
+The visualization includes:
+- Recursive DFS with call stack visualization
+- Iterative DFS with explicit stack operations
+- Comparison of both approaches
+- Step-by-step algorithm explanations
+"""
+
 from manim import *
 import numpy as np
 
+
 class DFSVisualization(Scene):
+    """
+    Visualizes both recursive and iterative Depth-First Search algorithms.
+    
+    DFS explores a graph by following one path as deep as possible before
+    backtracking, making it useful for pathfinding, cycle detection, and
+    topological sorting.
+    """
+    
     def construct(self):
         # ============================================================
-        # Unified Introduction
+        # Section 1: Introduction
+        # Display title and introduce the DFS concept
         # ============================================================
         intro_title = Text("Graph Theory – Depth-First Search (DFS)", font_size=48)
         self.play(FadeIn(intro_title, shift=UP * 0.5), run_time=0.75)
@@ -12,9 +36,9 @@ class DFSVisualization(Scene):
         self.play(FadeOut(intro_title, shift=UP * 0.5), run_time=0.4)
 
         # ============================================================
-        # Recursive DFS Section
+        # Section 2: Recursive DFS Implementation
+        # Demonstrate DFS using recursion with call stack visualization
         # ============================================================
-        # Graph setup - bigger scale, matching main.py colors
         vertices = [0, 1, 2, 3, 4, 5, 6]
         edges = [(0, 1), (0, 2), (1, 3), (1, 4), (2, 5), (3, 6), (4, 6)]
         
@@ -29,7 +53,10 @@ class DFSVisualization(Scene):
             6: DOWN * 2.2,
         }
         
-        # Palette & timing tuned to match dijk.py
+        # ============================================================
+        # Configuration: Visual Styles and Animation Timing
+        # Define colors, styles, and timing constants for consistent animations
+        # ============================================================
         EDGE_COLOR = WHITE
         EDGE_HIGHLIGHT = "#FF6B6B"  # vibrant red highlight
         NODE_ACTIVE = "#FFD54F"     # warm gold
@@ -75,7 +102,8 @@ class DFSVisualization(Scene):
             node_labels.add(label)
         
         # ============================================================
-        # DFS Algorithm Steps
+        # Section 3: Algorithm Explanation
+        # Display the step-by-step DFS algorithm before visualization
         # ============================================================
         dfs_algo_title = Text("DFS Algorithm", font_size=40).to_edge(UP)
         self.play(Write(dfs_algo_title), run_time=0.6)
