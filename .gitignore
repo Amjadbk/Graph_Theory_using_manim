@@ -1,27 +1,8 @@
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+*.pyc
 
 # Virtual Environment
 myenv/
@@ -30,13 +11,9 @@ ENV/
 env/
 .venv
 
-# Manim
+# Manim generated files
 media/
 *.mp4
-*.png
-*.jpg
-*.jpeg
-*.gif
 *.svg
 *.tex
 *.log
@@ -49,27 +26,9 @@ media/
 *~
 .DS_Store
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pytest
-.pytest_cache/
-.coverage
-htmlcov/
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
 # Project specific
 slides/
 *.json
 
-# Keep assets folder but ignore large files if needed
-# assets/*.jpg
-# assets/*.png
-
+# Keep assets/ and src/ - they are tracked
+# Keep README.md, LICENSE, .gitignore - they are tracked
