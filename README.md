@@ -1,5 +1,3 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/094ab3b6-6780-44d4-921f-168b98e563ca" /># Graph Theory Animations with Manim
-
 A comprehensive collection of educational animations covering fundamental graph theory concepts, algorithms, and visualizations created using [Manim](https://www.manim.community/).
 
 ## 📚 Overview
@@ -7,8 +5,7 @@ A comprehensive collection of educational animations covering fundamental graph 
 This project provides animated visualizations for learning graph theory, including:
 
 - **Graph Traversals**: BFS (Breadth-First Search) and DFS (Depth-First Search)
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d4d20cd3-3f88-4822-b7fb-9f54c82f0af6" />
-
+  https://github.com/user-attachments/assets/06562ae8-6a3f-4058-bc97-9bd1cf56f1b4
 - **Shortest Path Algorithms**: Dijkstra's Algorithm
 - **Eulerian Paths & Circuits**: Hierholzer's Algorithm and Fleury's Algorithm
 - **Hamiltonian Paths & Cycles**: Backtracking algorithms and theorems
