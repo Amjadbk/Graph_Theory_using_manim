@@ -129,6 +129,13 @@ class HamiltonConcepts(Scene):
             edge_config=edge_style,
         )
         base_graph.scale(0.95)
+        
+        # Add node labels to base_graph
+        base_labels = VGroup()
+        for v in vertices:
+            label = MathTex(str(v), font_size=20, color=BLACK)
+            label.move_to(base_graph.vertices[v].get_center())
+            base_labels.add(label)
 
         # ============================================================
         # Section 1: Introduction
@@ -150,7 +157,7 @@ class HamiltonConcepts(Scene):
             font_size=28,
         ).next_to(title, DOWN, buff=0.3)
 
-        self.play(Create(base_graph), Write(title), run_time=1.5)
+        self.play(Create(base_graph), Write(base_labels), Write(title), run_time=1.5)
         self.play(Write(desc), run_time=1.2)
         self.wait(1)
 
@@ -230,7 +237,7 @@ class HamiltonConcepts(Scene):
         )
         self.wait(1)
 
-        self.play(FadeOut(base_graph), FadeOut(title), FadeOut(hg_text), run_time=1.0)
+        self.play(FadeOut(base_graph), FadeOut(base_labels), FadeOut(title), FadeOut(hg_text), run_time=1.0)
         self.wait(1)
 
         # Add shelby.jpg image before Ore's theorem
@@ -289,6 +296,13 @@ class HamiltonConcepts(Scene):
             edge_config=edge_style,
         )
         ore_graph.scale(0.9)
+        
+        # Add node labels to ore_graph
+        ore_labels = VGroup()
+        for v in ore_vertices:
+            label = MathTex(str(v), font_size=20, color=BLACK)
+            label.move_to(ore_graph.vertices[v].get_center())
+            ore_labels.add(label)
 
         title_ore = Text("Ore's Theorem", font_size=40).to_edge(UP)
         desc_ore = MathTex(
@@ -297,7 +311,7 @@ class HamiltonConcepts(Scene):
             font_size=26,
         ).next_to(title_ore, DOWN, buff=0.3)
 
-        self.play(Create(ore_graph), Write(title_ore), run_time=1.5)
+        self.play(Create(ore_graph), Write(ore_labels), Write(title_ore), run_time=1.5)
         self.play(Write(desc_ore), run_time=1.2)
         self.wait(1)
 
@@ -323,6 +337,7 @@ class HamiltonConcepts(Scene):
 
         self.play(
             FadeOut(ore_graph),
+            FadeOut(ore_labels),
             FadeOut(title_ore),
             FadeOut(desc_ore),
             FadeOut(ore_text_pair),
@@ -358,6 +373,13 @@ class HamiltonConcepts(Scene):
             edge_config=edge_style,
         )
         dirac_graph.scale(0.9)
+        
+        # Add node labels to dirac_graph
+        dirac_labels = VGroup()
+        for v in dirac_vertices:
+            label = MathTex(str(v), font_size=20, color=BLACK)
+            label.move_to(dirac_graph.vertices[v].get_center())
+            dirac_labels.add(label)
 
         title_dirac = Text("Dirac's Theorem", font_size=40).to_edge(UP)
         desc_dirac = MathTex(
@@ -366,7 +388,7 @@ class HamiltonConcepts(Scene):
             font_size=26,
         ).next_to(title_dirac, DOWN, buff=0.3)
 
-        self.play(Create(dirac_graph), Write(title_dirac), run_time=1.5)
+        self.play(Create(dirac_graph), Write(dirac_labels), Write(title_dirac), run_time=1.5)
         self.play(Write(desc_dirac), run_time=1.2)
         self.wait(1)
 
@@ -409,6 +431,7 @@ class HamiltonConcepts(Scene):
 
         self.play(
             FadeOut(dirac_graph),
+            FadeOut(dirac_labels),
             FadeOut(title_dirac),
             FadeOut(desc_dirac),
             FadeOut(deg_text_dirac),
@@ -1117,27 +1140,5 @@ class HamiltonConcepts(Scene):
             FadeOut(summary_title), FadeOut(summary_points),
             run_time=1.0
         )
-        self.wait(1)
-
-        # ============================================================
-        # Final Summary (Hamiltonian topics)
-        # ============================================================
-        summary_title = Text("Summary – Hamiltonian Paths & Cycles", font_size=42)
-        self.play(FadeIn(summary_title, shift=UP * 0.5), run_time=1.0)
-        self.wait(1)
-        self.play(summary_title.animate.to_edge(UP), run_time=0.8)
-
-        summary_points = VGroup(
-            MathTex(r"\text{Hamilton path: visits every vertex exactly once.}", font_size=24),
-            MathTex(r"\text{Hamilton cycle: Hamilton path that returns to start.}", font_size=24),
-            MathTex(r"\text{Ore/Dirac: degree conditions that guarantee cycles.}", font_size=24),
-            MathTex(r"\text{Backtracking: systematic search for Hamilton cycles.}", font_size=24),
-        ).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
-        summary_points.next_to(summary_title, DOWN, buff=0.6)
-
-        self.play(Write(summary_points), run_time=2.0)
-        self.wait(1)
-
-        self.play(FadeOut(summary_title), FadeOut(summary_points), run_time=1.0)
         self.wait(1)
 

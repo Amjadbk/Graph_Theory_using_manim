@@ -257,19 +257,12 @@ class DijkstraVisualization(Scene):
                 self.play(item.animate.move_to(target), run_time=0.2, rate_func=smooth)
         
         # Enqueue helper for priority queue
+        # Allow duplicate entries - keep both when better path found
         def enqueue_pq(dist, node):
             if node in visited:
                 return
-            # Check if node already in queue - if so, update it
-            for i, (item, (d, n)) in enumerate(pq_items):
-                if n == node:
-                    # Remove old item
-                    old_item, _ = pq_items.pop(i)
-                    self.play(FadeOut(old_item, shift=DOWN * 0.2), run_time=0.2, rate_func=smooth)
-                    layout_pq()
-                    break
             
-            # Create the new item but don't add it to scene yet
+            # Create the new item - allow duplicates, don't remove old entries
             box = Rectangle(
                 width=0.7,
                 height=0.6,
@@ -290,7 +283,7 @@ class DijkstraVisualization(Scene):
             temp_items.sort(key=lambda x: (x[1][0], x[1][1]))
             
             # Find the index where new item will be inserted
-            insert_index = next(i for i, (_, (d, n)) in enumerate(temp_items) if n == node)
+            insert_index = next(i for i, (_, (d, n)) in enumerate(temp_items) if (d, n) == new_item_data)
             
             # Calculate final positions for all items
             x_mid = pq_inner.get_center()[0]
@@ -308,7 +301,7 @@ class DijkstraVisualization(Scene):
             if anims:
                 self.play(*anims, run_time=0.3, rate_func=smooth)
             
-            # Now add the new item to the list and scene
+            # Now add the new item to the list and scene (keep duplicates)
             pq_items.append((group, new_item_data))
             pq_items.sort(key=lambda x: (x[1][0], x[1][1]))
             
@@ -318,8 +311,8 @@ class DijkstraVisualization(Scene):
             self.add(group)
             self.play(FadeIn(group, shift=UP * 0.1), group.animate.move_to(target_pos), run_time=0.3, rate_func=smooth)
             
-            # queue color on node
-            if node not in visited:
+            # queue color on node (only if not already colored)
+            if node not in visited and node not in in_pq:
                 self.play(
                     graph.vertices[node].animate.set_fill("#5FA8FF"),
                     node_labels[node].animate.set_color(WHITE),
@@ -328,17 +321,20 @@ class DijkstraVisualization(Scene):
                 )
             in_pq.add(node)
         
-        # Dequeue helper for priority queue - removes item matching (dist, node)
+        # Dequeue helper for priority queue - removes top element (smallest distance)
         def dequeue_pq(dist, node):
             if not pq_items:
                 return
-            # Find and remove the matching item
+            # Remove the top element (first in sorted list - smallest distance)
+            # Find the item matching the popped (dist, node) tuple
             for i, (item, (d, n)) in enumerate(pq_items):
                 if d == dist and n == node:
                     removed_item = pq_items.pop(i)[0]
                     self.play(FadeOut(removed_item, shift=UP * 0.2), run_time=0.3, rate_func=smooth)
                     layout_pq()
-                    in_pq.discard(node)
+                    # Only remove from in_pq if no other entries for this node exist
+                    if not any(n == node for _, (_, n) in pq_items):
+                        in_pq.discard(node)
                     return
         
         # Priority queue: (distance, node) - properly initialize as heap
@@ -347,13 +343,16 @@ class DijkstraVisualization(Scene):
         enqueue_pq(0, 0)  # Add initial node to visual queue
         
         while pq:
-            # Wait 5 seconds before entering new node and erasing it from priority queue
+            # Wait before entering new node and erasing it from priority queue
             self.wait(1)
             current_dist, u = heapq.heappop(pq)
-            dequeue_pq(current_dist, u)  # Remove from visual queue
             
+            # Skip if already visited (duplicate entry in queue)
             if u in visited:
+                dequeue_pq(current_dist, u)  # Remove from visual queue
                 continue
+            
+            dequeue_pq(current_dist, u)  # Remove from visual queue
             
             # Mark as visited
             visited.add(u)
@@ -811,7 +810,7 @@ class DijkstraVisualization(Scene):
         edge_weights1 = {
             (0, 1): 6,
             (0, 2): 5,
-            (1, 3): 5,
+            (1, 3): 2,
             (2, 3): 5,
         }
         layout1 = {

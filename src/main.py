@@ -970,9 +970,18 @@ class GraphSequence(Scene):
         # Show degrees (all should be 3)
         deg_reg = {v: 3 for v in vertices_reg}
         deg_labels_reg = VGroup()
+        # Position labels to avoid overlapping with edges
+        label_positions = {
+            0: UP * 0.5,      # Top left - position above
+            1: UP * 0.6,      # Top center - position above
+            2: UP * 0.5,      # Top right - position above
+            3: DOWN * 0.5,    # Bottom left - position below
+            4: DOWN * 0.6,    # Bottom center - position below
+            5: DOWN * 0.5,    # Bottom right - position below
+        }
         for v in vertices_reg:
             lbl = MathTex(rf"\deg({v}) = 3", font_size=20, color=GREEN)
-            lbl.next_to(reg_graph.vertices[v], UP, buff=0.25)
+            lbl.move_to(reg_graph.vertices[v].get_center() + label_positions.get(v, UP * 0.5))
             deg_labels_reg.add(lbl)
         self.play(Write(deg_labels_reg), run_time=1.2)
         self.wait(1.0)
