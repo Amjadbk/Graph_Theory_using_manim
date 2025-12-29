@@ -5,7 +5,7 @@ A comprehensive collection of educational animations covering fundamental graph 
 This project provides animated visualizations for learning graph theory, including:
 
 - **Graph Traversals**: BFS (Breadth-First Search) and DFS (Depth-First Search)
-  https://github.com/user-attachments/assets/06562ae8-6a3f-4058-bc97-9bd1cf56f1b4
+  ![Image](https://github.com/user-attachments/assets/b7bb00ba-4999-4f21-ba0c-7102607d5e4a) 
 - **Shortest Path Algorithms**: Dijkstra's Algorithm
 - **Eulerian Paths & Circuits**: Hierholzer's Algorithm and Fleury's Algorithm
 - **Hamiltonian Paths & Cycles**: Backtracking algorithms and theorems
