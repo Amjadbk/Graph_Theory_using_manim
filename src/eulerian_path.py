@@ -503,14 +503,14 @@ class EulerianPaths(Scene):
         self.play(Write(hierholzer_title), run_time=1.2)
 
         algo_text = VGroup(
-            MathTex(r"\text{1. Start with empty stack and empty circuit.}", font_size=24),
+            MathTex(r"\text{1. Start with empty stack and empty path/trail.}", font_size=24),
             MathTex(r"\text{   Choose start vertex (even degree: any, odd: one of two).}", font_size=24),
             MathTex(r"\text{2. If current vertex has no neighbors:}", font_size=24),
-            MathTex(r"\text{   - Add it to circuit, pop from stack, set as current.}", font_size=24),
+            MathTex(r"\text{   - Add it to path, pop from stack, set as current.}", font_size=24),
             MathTex(r"\text{3. Otherwise (has neighbors):}", font_size=24),
             MathTex(r"\text{   - Push vertex to stack, pick neighbor, remove edge, move.}", font_size=24),
             MathTex(r"\text{4. Repeat until no neighbors and stack is empty.}", font_size=24),
-            MathTex(r"\text{5. Circuit is in reverse order (end to start).}", font_size=24),
+            MathTex(r"\text{5. Path/trail is in reverse order (end to start).}", font_size=24),
         ).arrange(DOWN, buff=0.25, aligned_edge=LEFT)
         algo_text.next_to(hierholzer_title, DOWN, buff=0.4)
         self.play(Write(algo_text), run_time=3.75)
@@ -555,13 +555,13 @@ class EulerianPaths(Scene):
         stack_bottom = stack_container.get_bottom()[1]
         self.add(stack_label, stack_container)
 
-        circuit_label = Text("Circuit:", font_size=22, color=GREEN).to_edge(LEFT, buff=0.8).shift(DOWN * 2.0)
-        circuit_text = MathTex("", font_size=14, color=GREEN).next_to(circuit_label, RIGHT, buff=0.2)
-        self.add(circuit_label, circuit_text)
+        path_label = Text("Path:", font_size=22, color=GREEN).to_edge(LEFT, buff=0.8).shift(DOWN * 2.0)
+        path_text = MathTex("", font_size=14, color=GREEN).next_to(path_label, RIGHT, buff=0.2)
+        self.add(path_label, path_text)
 
         stack_vertices = []
         stack_visual_items = VGroup()
-        circuit = []
+        path = []
 
         current_vertex = 5
         remaining_edges = {(min(u, v), max(u, v)) for u, v in edges_h}
@@ -590,13 +590,13 @@ class EulerianPaths(Scene):
                     neighbors.append(u)
 
             if len(neighbors) == 0:
-                circuit.append(current_vertex)
+                path.append(current_vertex)
 
-                circuit_str = r" \to ".join([str(v) for v in circuit])
-                new_circuit_text = MathTex(circuit_str, font_size=14, color=GREEN).next_to(circuit_label, RIGHT, buff=0.2)
-                new_circuit_text.scale(0.8)
+                path_str = r" \to ".join([str(v) for v in path])
+                new_path_text = MathTex(path_str, font_size=14, color=GREEN).next_to(path_label, RIGHT, buff=0.2)
+                new_path_text.scale(0.8)
                 self.play(
-                    Transform(circuit_text, new_circuit_text),
+                    Transform(path_text, new_path_text),
                     g_h.vertices[current_vertex].animate.set_fill(CIRCUIT_COLOR),
                     run_time=0.9
                 )
@@ -619,7 +619,7 @@ class EulerianPaths(Scene):
                             self.play(item.animate.move_to([stack_container.get_center()[0], item_y, 0]), run_time=0.3)
 
                 new_status = MathTex(
-                    rf"\text{{No neighbors: add {old_vertex} to circuit, pop {current_vertex} from stack}}",
+                    rf"\text{{No neighbors: add {old_vertex} to path, pop {current_vertex} from stack}}",
                     font_size=20,
                     color=YELLOW,
                 ).move_to(status_text.get_center())
@@ -664,7 +664,7 @@ class EulerianPaths(Scene):
                 current_vertex = next_vertex
                 self.wait(1)
 
-        final_circuit = list(reversed(circuit))
+        final_path = list(reversed(path))
 
         self.play(
             FadeOut(example_title), FadeOut(g_h), FadeOut(lbl_h),
@@ -678,29 +678,29 @@ class EulerianPaths(Scene):
         except Exception:
             pass
 
-        original_circuit_str = r" \to ".join([str(v) for v in circuit])
-        circuit_label_top = Text("Circuit:", font_size=22, color=GREEN).move_to(UP * 1.2 + LEFT * 2.0)
-        original_circuit_text = MathTex(original_circuit_str, font_size=18, color=GREEN)
-        original_circuit_text.next_to(circuit_label_top, RIGHT, buff=0.2)
+        original_path_str = r" \to ".join([str(v) for v in path])
+        path_label_top = Text("Path:", font_size=22, color=GREEN).move_to(UP * 1.2 + LEFT * 2.0)
+        original_path_text = MathTex(original_path_str, font_size=18, color=GREEN)
+        original_path_text.next_to(path_label_top, RIGHT, buff=0.2)
 
         self.play(
-            circuit_label.animate.move_to(circuit_label_top.get_center()),
-            circuit_text.animate.move_to(original_circuit_text.get_center()).scale(1 / 0.8),
+            path_label.animate.move_to(path_label_top.get_center()),
+            path_text.animate.move_to(original_path_text.get_center()).scale(1 / 0.8),
             run_time=1.0
         )
         self.wait(0.5)
 
-        final_circuit_str = r" \to ".join([str(v) for v in final_circuit])
-        euler_trail_label = MathTex(r"\text{Euler Trail:}", font_size=22, color=CIRCUIT_COLOR).move_to(DOWN * 0.3 + LEFT * 2.0)
-        final_circuit_text = MathTex(final_circuit_str, font_size=22, color=CIRCUIT_COLOR)
-        final_circuit_text.next_to(euler_trail_label, RIGHT, buff=0.2)
+        final_path_str = r" \to ".join([str(v) for v in final_path])
+        euler_trail_label = MathTex(r"\text{Euler Path:}", font_size=22, color=CIRCUIT_COLOR).move_to(DOWN * 0.3 + LEFT * 2.0)
+        final_path_text = MathTex(final_path_str, font_size=22, color=CIRCUIT_COLOR)
+        final_path_text.next_to(euler_trail_label, RIGHT, buff=0.2)
 
-        self.play(Write(euler_trail_label), Write(final_circuit_text), run_time=1.5)
+        self.play(Write(euler_trail_label), Write(final_path_text), run_time=1.5)
         self.wait(1)
 
         self.play(
-            FadeOut(circuit_label), FadeOut(circuit_text),
-            FadeOut(euler_trail_label), FadeOut(final_circuit_text),
+            FadeOut(path_label), FadeOut(path_text),
+            FadeOut(euler_trail_label), FadeOut(final_path_text),
             run_time=1.2
         )
 
